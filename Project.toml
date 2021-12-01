@@ -1,6 +1,8 @@
-authors = "alisdair sullivan <alisdairsullivan@gmail.com>"
 name = "aoc2021"
 uuid = "50f182e8-adb2-4601-bb47-6cb17a294666"
+authors = "alisdair sullivan <alisdairsullivan@gmail.com>"
 version = "1.0.0"
 
 [deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+RollingFunctions = "b0e4dd01-7b14-53d8-9b45-175a3e362653"
