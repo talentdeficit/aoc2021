@@ -3,7 +3,10 @@ using Match
 input = joinpath(@__DIR__, "input")
 instructions = readlines(input)
 
-instructions = map(split, instructions) .|> instruction -> (instruction[1], parse(Int, instruction[2]))
+instructions = map(instructions) do ins
+    ins = split(ins)
+    (first(ins), parse(Int, last(ins)))
+end
 
 function navigate(instructions, depth, pos)
     for i in instructions
@@ -35,10 +38,10 @@ end
 p1 = navigate(instructions, 0, 0)
 p2 = navigate(instructions, 0, 0, 0)
 
-@assert(p1 == 1714680)
-@assert(p2 == 1963088820)
-
 println("-----------------------------------------------------------------------")
 println("dive! -- part one :: $p1")
 println("dive! -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 1714680)
+@assert(p2 == 1963088820)
