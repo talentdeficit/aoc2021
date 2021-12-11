@@ -6,3 +6,4 @@ version = "1.0.0"
 [deps]
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 RollingFunctions = "b0e4dd01-7b14-53d8-9b45-175a3e362653"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"

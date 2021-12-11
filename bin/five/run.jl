@@ -45,10 +45,10 @@ dias = filter(!isnothing, diagonals(coords))
 p1 = length(filter(p -> last(p) > 1, countmap(Iterators.flatten(orthos))))
 p2 = length(filter(p -> last(p) > 1, countmap(Iterators.flatten(append!(orthos, dias)))))
 
-@assert(p1 == 6005)
-@assert(p2 == 23864)
-
 println("-----------------------------------------------------------------------")
 println("hydrothermal venture -- part one :: $p1")
 println("hydrothermal venture -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 6005)
+@assert(p2 == 23864)

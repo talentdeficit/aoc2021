@@ -22,13 +22,13 @@ end
 
 fish = countmap(vec(fish))
 
-p1 = sum(map(fishes -> last(fishes), collect(advance(copy(fish), 80))))
-p2 = sum(map(fishes -> last(fishes), collect(advance(copy(fish), 256))))
-
-@assert(p1 == 383160)
-@assert(p2 == 1721148811504)
+p1 = sum(map(fishes -> last(fishes), collect(advance(fish, 80))))
+p2 = sum(map(fishes -> last(fishes), collect(advance(fish, 256))))
 
 println("-----------------------------------------------------------------------")
 println("lanternfish -- part one :: $p1")
 println("lanternfish -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 383160)
+@assert(p2 == 1721148811504)

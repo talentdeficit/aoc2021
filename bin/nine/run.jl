@@ -1,16 +1,10 @@
 input = joinpath(@__DIR__, "input")
 lines = readlines(input)
 
-m = Array{Int, 2}(undef, length(lines), length(lines[1]))
-
-for y in 1:length(lines)
-    for x in 1:length(lines[1])
-        m[y, x] = lines[y][x] - '0'
-    end
-end
+m = hcat(map(line -> map(n -> parse(Int, n), collect(line)), lines)...)
 
 function neighbors(m, idx)
-    (x, y) = Tuple(idx)
+    x, y = Tuple(idx)
     return filter(c -> checkbounds(Bool, m, c), [
         CartesianIndex(x + 1, y),
         CartesianIndex(x - 1, y),
@@ -32,7 +26,7 @@ function basins(m, idx)
         ch = m[curr]
         ns = neighbors(m, curr)
         for n in ns
-            if m[n] > ch && m[n] < 9
+            if m[n] > ch && m[n] < 9 && !(n in basin)
                 push!(prospects, n)
             end
         end
@@ -43,12 +37,12 @@ end
 
 lowpoints = filter(!isnothing, map(idx -> lowpoint(m, idx), CartesianIndices(m)))
 p1 = sum([m[n] + 1 for n in lowpoints])
-p2 = prod(sort(map(idx -> basins(m, idx), lowpoints))[end-2:end])
-
-@assert(p1 == 524)
-@assert(p2 == 1235430)
+p2 = prod(sort(map(idx -> basins(m, idx), lowpoints), lt=!isless)[1:3])
 
 println("-----------------------------------------------------------------------")
 println("smoke basin -- part one :: $p1")
 println("smoke basin -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 524)
+@assert(p2 == 1235430)

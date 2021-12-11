@@ -24,7 +24,7 @@ function score(numbers, board)
         for s in b
             if issubset(s, drawn)
                 rem = setdiff(Iterators.flatten(board), drawn)
-                # return score and "round" board won in
+                # return "round" board won in and score
                 return (length(drawn), sum(rem) * last(drawn))
             end
         end
@@ -40,10 +40,10 @@ scores = map(b -> score(numbers, b), boards)
 p1 = fastest
 p2 = slowest
 
-@assert(p1 == 44736)
-@assert(p2 == 1827)
-
 println("-----------------------------------------------------------------------")
 println("giant squid -- part one :: $p1")
 println("giant squid -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 44736)
+@assert(p2 == 1827)

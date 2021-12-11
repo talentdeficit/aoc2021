@@ -18,15 +18,14 @@ function rating(diagnostics, mcf)
     end
 end
 
-diagnostics = vec([Vector{Char}(entry) .- '0' for entry in raw])
+diagnostics = map(vec(raw)) do diagnostic
+    map(n -> parse(Int, n), collect(diagnostic))
+end
 
 sums = sum(diagnostics)
 
-mc = sums .> (length(diagnostics) / 2)
-lc = sums .< (length(diagnostics) / 2)
-
-gamma = decimalize(mc)
-epsilon = decimalize(lc)
+gamma = decimalize(sums .>= (length(diagnostics) / 2))
+epsilon = decimalize(sums .< (length(diagnostics) / 2))
 
 oxygen = decimalize(rating(copy(diagnostics), ds -> sum(ds) .>= length(ds) / 2))
 scrubber = decimalize(rating(copy(diagnostics), ds -> sum(ds) .< length(ds) / 2))
@@ -34,10 +33,10 @@ scrubber = decimalize(rating(copy(diagnostics), ds -> sum(ds) .< length(ds) / 2)
 p1 = gamma * epsilon
 p2 = oxygen * scrubber
 
-@assert(p1 == 738234)
-@assert(p2 == 3969126)
-
 println("-----------------------------------------------------------------------")
 println("binary diagnostic -- part one :: $p1")
 println("binary diagnostic -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 738234)
+@assert(p2 == 3969126)

@@ -14,10 +14,10 @@ end
 p1 = minimum(align_crabs(crabs, (i, n) -> abs(i - n)))
 p2 = minimum(align_crabs(crabs, (i, n) -> div(abs(i - n) * (abs(i - n) + 1), 2)))
 
-@assert(p1 == 343468)
-@assert(p2 == 96086265)
-
 println("-----------------------------------------------------------------------")
 println("the treachery of whales -- part one :: $p1")
 println("the treachery of whales -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 343468)
+@assert(p2 == 96086265)

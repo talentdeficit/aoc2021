@@ -60,10 +60,10 @@ known = knowns(ins)
 p1 = length(filter(n -> length(n) in [2,3,4,7], vcat(outs...)))
 p2 = sum(map(score, zip(outs, known)))
 
-@assert(p1 == 452)
-@assert(p2 == 1096964)
-
 println("-----------------------------------------------------------------------")
 println("hydrothermal venture -- part one :: $p1")
 println("hydrothermal venture -- part two :: $p2")
 println("-----------------------------------------------------------------------")
+
+@assert(p1 == 452)
+@assert(p2 == 1096964)
