@@ -61,8 +61,8 @@ p1 = length(filter(n -> length(n) in [2,3,4,7], vcat(outs...)))
 p2 = sum(map(score, zip(outs, known)))
 
 println("-----------------------------------------------------------------------")
-println("hydrothermal venture -- part one :: $p1")
-println("hydrothermal venture -- part two :: $p2")
+println("seven segment search -- part one :: $p1")
+println("seven segment search -- part two :: $p2")
 println("-----------------------------------------------------------------------")
 
 @assert(p1 == 452)
