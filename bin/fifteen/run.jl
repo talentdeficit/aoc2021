@@ -35,21 +35,20 @@ function path(m, origin, dest)
     candidates = PriorityQueue{CartesianIndex, Int}()
     node = CartesianIndex(1, 1)
     # initial node is free
-    distances[node] = 0
+    cost = 0
 
     while dest in unvisited
         delete!(unvisited, node)
-        cost = distances[node]
         for n in neighbors(m, node)
             haskey(distances, n) ? distances[n] = minimum([distances[n], cost + m[n]]) : distances[n] = cost + m[n]
             if n in unvisited
                 haskey(candidates, n) ? candidates[n] = minimum([distances[n], cost + m[n]]) : candidates[n] = cost + m[n]
             end
         end
-        node = dequeue!(candidates)
-        node == dest && delete!(unvisited, dest)
+        node, cost = dequeue_pair!(candidates)
+        node == dest && delete!(unvisited, node)
     end
-    return distances[dest]
+    return cost
 end
 
 p1 = path(m, CartesianIndex(1, 1), CartesianIndex(size(m)))
@@ -57,8 +56,8 @@ m = expand(m)
 p2 = path(m, CartesianIndex(1, 1), CartesianIndex(size(m)))
 
 println("-----------------------------------------------------------------------")
-println("chiton -- part one :: $p1")
-println("chiton -- part two :: $p2")
+println("hydrothermal venture -- part one :: $p1")
+println("hydrothermal venture -- part two :: $p2")
 println("-----------------------------------------------------------------------")
 
 @assert(p1 == 790)
