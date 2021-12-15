@@ -31,7 +31,6 @@ end
 
 function path(m, origin, dest)
     unvisited = Set{}(collect(CartesianIndices(m)))
-    distances = Dict{CartesianIndex, Int}()
     candidates = PriorityQueue{CartesianIndex, Int}()
     node = CartesianIndex(1, 1)
     # initial node is free
@@ -40,9 +39,10 @@ function path(m, origin, dest)
     while dest in unvisited
         delete!(unvisited, node)
         for n in neighbors(m, node)
-            haskey(distances, n) ? distances[n] = minimum([distances[n], cost + m[n]]) : distances[n] = cost + m[n]
             if n in unvisited
-                haskey(candidates, n) ? candidates[n] = minimum([distances[n], cost + m[n]]) : candidates[n] = cost + m[n]
+                haskey(candidates, n) ?
+                    candidates[n] = minimum([candidates[n], cost + m[n]]) :
+                    candidates[n] = cost + m[n]
             end
         end
         node, cost = dequeue_pair!(candidates)
