@@ -32,7 +32,7 @@ end
 function path(m, origin, dest)
     unvisited = Set{}(collect(CartesianIndices(m)))
     candidates = PriorityQueue{CartesianIndex, Int}()
-    node = CartesianIndex(1, 1)
+    node = origin
     # initial node is free
     cost = 0
 
