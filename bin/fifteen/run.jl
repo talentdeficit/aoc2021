@@ -56,8 +56,8 @@ m = expand(m)
 p2 = path(m, CartesianIndex(1, 1), CartesianIndex(size(m)))
 
 println("-----------------------------------------------------------------------")
-println("hydrothermal venture -- part one :: $p1")
-println("hydrothermal venture -- part two :: $p2")
+println("chiton -- part one :: $p1")
+println("chiton -- part two :: $p2")
 println("-----------------------------------------------------------------------")
 
 @assert(p1 == 790)
