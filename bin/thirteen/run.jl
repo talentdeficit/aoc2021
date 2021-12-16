@@ -1,75 +1,61 @@
-input = joinpath(@__DIR__, "input")
-lines = readlines(input)
+input = read(joinpath(@__DIR__, "input"), String)
+coords, instructions = split(input, "\n\n")
 
-function p(lines)
-    points = Set()
-    folds = []
-    i = 1
-    while true
-        lines[i] == "" && break
-        parts = map(n -> parse(Int, n), split(lines[i], ","))
-        push!(points, (first(parts), last(parts)))
-        i += 1
-    end
-    i += 1
-    while true
-        i > length(lines) && break
-        parts = split(last(split(lines[i], " ")), "=")
-        push!(folds, (first(collect(first(parts))), parse(Int, last(parts)) + 1))
-        i += 1
-    end
-    x = maximum(map(coord -> first(coord), collect(points)))
-    y = maximum(map(coord -> last(coord), collect(points)))
-    # input needs an extra row
-    paper = zeros(x + 1, y + 2)
-    for point in collect(points)
-        (x, y) = point
-        paper[CartesianIndex(x + 1, y + 1)] = 1
-    end
-    return (paper, folds)
+paper = Set()
+for coord in split(coords, "\n")
+    x, y = parse.(Int, match(r"(\d+),(\d+)", coord).captures)
+    push!(paper, (x, y))
 end
 
-(paper, folds) = p(lines)
+folds = []
+for i in split(instructions, "\n", keepempty=false)
+    dim, n = match(r".+([xy])=(\d+)$", i).captures
+    push!(folds, (dim, parse(Int, n)))
+end
 
-function foldonce(paper, dim, idx)
-    if dim == 'x'
-        left = paper[1:idx - 1, :]
-        right = paper[(idx + 1):end, :]
-        reverse!(left, dims=1)
-        return reverse!(left .+ right, dims=1)
-    elseif dim == 'y'
-        left = paper[:, 1:idx - 1]
-        right = paper[:, (idx + 1):end]
-        reverse!(left, dims=2)
-        return reverse!(left .+ right, dims=2)
-    end
+function translatex(coord, n)
+    x, y = coord
+    x > n && return (n - (x - n), y)
+    return (x, y)
+end
+
+function translatey(coord, n)
+    x, y = coord
+    y > n && return (x, n - (y - n))
+    return (x, y)
 end
 
 function fold(paper, folds)
     paper = copy(paper)
-    for fold in folds
-        paper = foldonce(paper, first(fold), last(fold))
+    for (dim, n) in folds
+        if dim == "x"
+            paper = map(idx -> translatex(idx, n), collect(paper))
+            paper = filter(idx -> first(idx) <= n, paper)
+            paper = unique(paper)
+        else
+            paper = map(idx -> translatey(idx, n), collect(paper))
+            paper = filter(idx -> last(idx) <= n, paper)
+            paper = unique(paper)
+        end
     end
     return paper
 end
 
-(dim, idx) = first(folds)
-m = foldonce(paper, dim, idx)
-p1 = length(findall(n -> n > 0, m))
+firstfold = first(folds)
+p1 = length(fold(paper, [firstfold]))
 
 paper = fold(paper, folds)
-coords = findall(n -> n > 0, paper)
-(x, y) = size(paper)
-
+x = maximum(map(idx -> first(idx), collect(paper)))
+y = maximum(map(idx -> last(idx), collect(paper)))
 
 println("-----------------------------------------------------------------------")
 println("transparent origami -- part one :: $p1")
 println("transparent origami -- part two ::")
 println()
-for i in 1:y
+for j in 0:y
     print("    ")
-    for j in 1:x
-        paper[CartesianIndex(j, i)] > 0 ? print("█") : print(" ")
+    for i in 0:x
+        (i, j) in paper ? print("█") : print(" ")
     end
     println()
 end
