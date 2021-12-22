@@ -39,7 +39,6 @@ function mode(bits)
 end
 
 function p(bits)
-    all(c -> c == '0', collect(bits)) && return (0, 4, 0, [])
     v = version(bits)
     h = header(bits)
     if h == 4
