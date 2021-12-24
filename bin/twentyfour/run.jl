@@ -78,6 +78,7 @@ function equaler(registers, a, b)
     return rs
 end
 
+# generic vm. slow as shit. use runf below
 function run(program, registers, input, io)
     idx = io
     for int in program
@@ -118,7 +119,7 @@ function run(program, registers, input, io)
     return registers
 end
 
-# optimized version of the program
+# optimized version of the program. doesn't take a year to finish
 function runf(program, rs, input, i)
     rs = copy(rs)
     w = parse(Int, input[i])
@@ -140,7 +141,7 @@ end
 PROGRAM = decode(lines)
 INITIAL = Dict([('w', 0), ('x', 0), ('y', 0), ('z', 0)])
 
-function optimize()
+function optimize(f)
     candidates = Dict([([], 0)])
 
     # 14 inputs
@@ -155,7 +156,7 @@ function optimize()
                 rs = copy(INITIAL)
                 rs['z'] = z
                 input = string(collect(candidate)...) * digit
-                result = runf(program, rs, input, i)
+                result = f(program, rs, input, i)
                 nz = result['z']
                 # @show((input, nz, baseline, nz < baseline))
                 if nz < baseline
@@ -176,7 +177,8 @@ function optimize()
     return extrema(map(n -> parse(Int, n), collect(keys(candidates))))
 end
 
-p2, p1 = optimize()
+# pass in run instead of runf to verify correctness
+p2, p1 = optimize(runf)
 
 println("-----------------------------------------------------------------------")
 println("arithmetic logic unit -- part one :: $p1")
